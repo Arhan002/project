@@ -3,4 +3,11 @@
   flex-direction: column;
   width: 40vw;
   justify-content: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
 }

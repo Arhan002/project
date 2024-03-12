@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Home from "./Pages/Home/Home";
+import Store from "./Pages/Store/Store";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/store",
+    element: <Store />,
   },
 ]);
 

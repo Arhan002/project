@@ -23,23 +23,30 @@ const Home = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} id="form">
-        <Controller
-          name="Username"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <InputText onChange={onChange} value={value} />
-          )}
-        />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Password onChange={onChange} value={value} toggleMask={true} />
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+      <div className="form-container">
+        <form onSubmit={handleSubmit(onSubmit)} id="form">
+          <Controller
+            name="Username"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <InputText onChange={onChange} value={value} />
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Password
+                onChange={onChange}
+                value={value}
+                toggleMask={true}
+                inputStyle={{ width: "100%" }}
+              />
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </div>
     </>
   );
 };
