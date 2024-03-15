@@ -4,7 +4,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import Customers from "./Pages/Customers/Customers";
 import Home from "./Pages/Home/Home";
+import Payments from "./Pages/Payments/Payments";
+import Products from "./Pages/Products/Products";
 import Store from "./Pages/Store/Store";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -17,6 +20,18 @@ const router = createBrowserRouter([
   {
     path: "/store",
     element: <Store />,
+  },
+  {
+    path: "/store/customers",
+    element: <Customers />,
+  },
+  {
+    path: "/store/customers/Payments",
+    element: <Payments />,
+  },
+  {
+    path: "/store/customers/Payments/Products",
+    element: <Products />,
   },
 ]);
 

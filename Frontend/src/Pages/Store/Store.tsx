@@ -1,5 +1,5 @@
+import { Button } from "primereact/button";
 import "../Store/Store.css";
-
 const Store = () => {
   return (
     <div className="main-container">
@@ -7,7 +7,13 @@ const Store = () => {
         <div className="store-container">
           <div className="store-heading">
             <p>Stores</p>
-            <button className="add-store-button">+</button>
+            <Button
+              size="small"
+              style={{ height: "80%" }}
+              className="add-store-button2"
+            >
+              +
+            </Button>
           </div>
           <div className="table-container">
             <table className="table-main">
@@ -26,7 +32,7 @@ const Store = () => {
                 <td>Store Type</td>
                 <td>Contact Number</td>
                 <td>
-                  <button>View</button>
+                  <Button size="small">View</Button>
                 </td>
               </tr>
             </table>
