@@ -2,6 +2,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import "../Home/Home.css";
 
 type formObj = {
@@ -10,6 +11,8 @@ type formObj = {
 };
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const { control, handleSubmit } = useForm<formObj>({
     defaultValues: {
       Username: "",
@@ -19,6 +22,7 @@ const Home = () => {
 
   const onSubmit: SubmitHandler<formObj> = (data) => {
     console.log(data);
+    navigate("/store");
   };
 
   return (
