@@ -92,3 +92,10 @@ td {
   align-items: center;
   justify-content: center;
 }
+
+.mini-container {
+  border: 2px solid black;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+}

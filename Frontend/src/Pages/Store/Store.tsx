@@ -1,43 +1,55 @@
+import { createContext, useContext, useState } from "react";
 import "../Store/Store.css";
+
+export const showContext = createContext<boolean | any>(false);
+
 const Store = () => {
+  const [show, setShow] = useState(false);
+
   return (
     <>
-      <AddStore />
-      <div className="main-container">
-        <div className="sub-container">
-          <div className="store-container">
-            <div className="store-heading">
-              <p>Stores</p>
-              <button style={{ height: "80%" }} className="add-store-button2">
-                +
-              </button>
-            </div>
+      <showContext.Provider value={[show, setShow]}>
+        {show ? <AddStore /> : <>{console.log("error")}</>}
+        <div className="main-container">
+          <div className="sub-container">
+            <div className="store-container">
+              <div className="store-heading">
+                <p>Stores</p>
+                <button
+                  style={{ height: "80%" }}
+                  className="add-store-button2"
+                  onClick={() => setShow(true)}
+                >
+                  +
+                </button>
+              </div>
 
-            <div className="table-container">
-              <table className="table-main">
-                <tr>
-                  <th>Store ID</th>
-                  <th>Store Name</th>
-                  <th>Store Location</th>
-                  <th>Store Type</th>
-                  <th>Contact Number</th>
-                  <th>Actions</th>
-                </tr>
-                <tr className="table-row">
-                  <td>Store ID</td>
-                  <td>Store Name</td>
-                  <td>Store Location</td>
-                  <td>Store Type</td>
-                  <td>Contact Number</td>
-                  <td>
-                    <button>View</button>
-                  </td>
-                </tr>
-              </table>
+              <div className="table-container">
+                <table className="table-main">
+                  <tr>
+                    <th>Store ID</th>
+                    <th>Store Name</th>
+                    <th>Store Location</th>
+                    <th>Store Type</th>
+                    <th>Contact Number</th>
+                    <th>Actions</th>
+                  </tr>
+                  <tr className="table-row">
+                    <td>Store ID</td>
+                    <td>Store Name</td>
+                    <td>Store Location</td>
+                    <td>Store Type</td>
+                    <td>Contact Number</td>
+                    <td>
+                      <button>View</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </showContext.Provider>
     </>
     // <>
     //   <AddStore />
@@ -46,15 +58,18 @@ const Store = () => {
 };
 
 const AddStore = () => {
+  const [show, setShow] = useContext(showContext);
   return (
     <div className="add-main-container">
       <div className="add-sub-container">
-        <p>ADD new Store</p>
-        <form>
-          <input type="text" />
-          <input type="text" />
-          <button>Submit</button>
-        </form>
+        <div className="mini-container">
+          <p>ADD new Store</p>
+          <form>
+            <input type="text" />
+            <input type="text" />
+            <button onClick={() => setShow(false)}>Submit</button>
+          </form>
+        </div>
       </div>
     </div>
   );
