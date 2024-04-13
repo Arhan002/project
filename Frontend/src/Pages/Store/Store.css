@@ -1,3 +1,16 @@
+div {
+  font-family: "Courier New", Courier, monospace;
+}
+
+div.store-heading {
+  font-weight: bolder;
+  font-size: x-large;
+}
+
+table th {
+  font-size: large;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;
@@ -36,6 +49,23 @@
   align-self: center;
   font-size: larger;
   z-index: 0px;
+  background-color: black;
+  color: white;
+  transition: all;
+  transition-duration: 200ms;
+  width: 2.5rem;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 3px;
+  border: 2px solid black;
+}
+
+.add-store-button2:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  transition: all;
+  transition-duration: 200ms;
 }
 
 .table-container {

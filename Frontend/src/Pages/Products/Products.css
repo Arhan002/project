@@ -33,16 +33,26 @@
 }
 
 .add-store-button {
-  height: 40%;
   align-self: center;
-  width: 2vw;
-  background-color: aqua;
-  text-align: center;
+  font-size: larger;
+  z-index: 0px;
+  background-color: black;
+  color: white;
+  transition: all;
+  transition-duration: 200ms;
+  width: 2.5rem;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 3px;
+  border: 2px solid black;
 }
 
 .add-store-button:hover {
-  background-color: aquamarine;
+  background-color: white;
+  color: black;
   cursor: pointer;
+  transition: all;
+  transition-duration: 200ms;
 }
 
 .table-container {
@@ -105,4 +115,11 @@ td {
   padding: 4rem;
   display: flex;
   flex-direction: column;
+}
+
+.summation-container {
+  font-size: large;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 600;
+  float: right;
 }

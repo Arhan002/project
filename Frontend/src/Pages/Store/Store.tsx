@@ -16,7 +16,6 @@ const Store = () => {
               <div className="store-heading">
                 <p>Stores</p>
                 <button
-                  style={{ height: "80%" }}
                   className="add-store-button2"
                   onClick={() => setShow(true)}
                 >
