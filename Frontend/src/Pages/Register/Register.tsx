@@ -3,14 +3,14 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import "../Home/Home.css";
+import "../Register/Register.css";
 
 type formObj = {
   Username: string;
   password: string;
 };
 
-const Home = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const { control, handleSubmit } = useForm<formObj>({
@@ -48,16 +48,23 @@ const Home = () => {
               />
             )}
           />
-          <div className="btn-container">
-            <Button type="submit">Submit</Button>
-            <a className="reg">
-              <u>Register Now</u>
-            </a>
-          </div>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Password
+                onChange={onChange}
+                value={value}
+                toggleMask={true}
+                inputStyle={{ width: "100%" }}
+              />
+            )}
+          />
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </>
   );
 };
 
-export default Home;
+export default Register;

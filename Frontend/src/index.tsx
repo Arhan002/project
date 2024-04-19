@@ -8,6 +8,7 @@ import Customers from "./Pages/Customers/Customers";
 import Home from "./Pages/Home/Home";
 import Payments from "./Pages/Payments/Payments";
 import Products from "./Pages/Products/Products";
+import Register from "./Pages/Register/Register";
 import Store from "./Pages/Store/Store";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/store/customers/Payments/Products",
     element: <Products />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 

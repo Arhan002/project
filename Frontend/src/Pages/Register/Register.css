@@ -11,17 +11,3 @@
   display: flex;
   justify-content: center;
 }
-
-.btn-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.reg {
-  text-align: center;
-  align-self: center;
-}
-
-.reg:hover {
-  cursor: pointer;
-}

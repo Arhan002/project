@@ -1,15 +1,33 @@
-import { createContext, useContext, useState } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import "../Store/Store.css";
 
 export const showContext = createContext<boolean | any>(false);
 
+const url = "http://127.0.0.1:5000/get_data";
+
 const Store = () => {
   const [show, setShow] = useState(false);
+
+  const getAllStores = async () => {
+    try {
+      const resp = await axios.get(url);
+      const data = resp.data;
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllStores();
+  }, []);
 
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
-        {show ? <AddStore /> : <>{console.log("error")}</>}
+        {show ? <AddStore /> : <>{console.log("Nothin")}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
