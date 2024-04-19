@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { usercontext } from "../../Context/User Details/User_details";
 import "../Store/Store.css";
 
 export const showContext = createContext<boolean | any>(false);
@@ -17,6 +18,8 @@ const url = "http://127.0.0.1:5000/get_store";
 const Store = () => {
   const [show, setShow] = useState(false);
   const [store_data, setStoreData] = useState([]);
+
+  const [user, setUser] = useContext(usercontext);
 
   const getAllStores = async () => {
     try {
@@ -36,7 +39,7 @@ const Store = () => {
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
-        {show ? <AddStore /> : <>{console.log("Nothin")}</>}
+        {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">

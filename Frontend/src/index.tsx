@@ -4,6 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import User_details from "./Context/User Details/User_details";
 import Customers from "./Pages/Customers/Customers";
 import Home from "./Pages/Home/Home";
 import Payments from "./Pages/Payments/Payments";
@@ -46,7 +47,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <PrimeReactProvider>
-      <RouterProvider router={router} />
+      <User_details>
+        <RouterProvider router={router} />
+      </User_details>
     </PrimeReactProvider>
   </React.StrictMode>
 );
