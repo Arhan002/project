@@ -1,10 +1,37 @@
-import { createContext, useContext, useState } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import "../Customers/Customers.css";
 
 const showContext = createContext<boolean | any>(false);
 
+const url = "http://127.0.0.1:5000/get_customer";
+
+type customer_data = {
+  customer_id: number;
+  customer_name: string;
+  email: string;
+  phone_number: string;
+  address: string;
+};
+
 const Customers = () => {
   const [show, setShow] = useState(false);
+  const [customer_data, setCustomerData] = useState([]);
+
+  const getAllCustomers = async () => {
+    try {
+      const resp = await axios.get(url);
+      const data = resp.data;
+      setCustomerData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCustomers();
+  }, []);
 
   return (
     <>
@@ -32,7 +59,7 @@ const Customers = () => {
                     <th>Contact Number</th>
                     <th>Actions</th>
                   </tr>
-                  <tr className="table-row">
+                  {/* <tr className="table-row">
                     <td>Customer ID</td>
                     <td>Customer Name</td>
                     <td>Customer Location</td>
@@ -41,7 +68,23 @@ const Customers = () => {
                     <td>
                       <button>View</button>
                     </td>
-                  </tr>
+                  </tr> */}
+                  {customer_data &&
+                    customer_data.map((data: customer_data) => {
+                      return (
+                        <tr className="table-row">
+                          <td>{data.customer_id}</td>
+                          <td>{data.customer_name}</td>
+                          <td>{data.address}</td>
+                          <td>{data.email}</td>
+                          <td>{data.phone_number}</td>
+                          <td>
+                            <button>View</button>
+                            <button>delete</button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </table>
               </div>
             </div>
@@ -58,9 +101,13 @@ const AddStore = () => {
     <div className="add-main-container">
       <div className="add-sub-container">
         <div className="mini-container">
-          <p>ADD new Store</p>
-          <form>
-            <input type="text" />
+          <p style={{ fontWeight: "bold" }}>ADD new Store</p>
+          <button className="x_button" onClick={() => setShow(false)}>
+            X
+          </button>
+
+          <form id="AddForm">
+            <input type="text" placeholder="" />
             <input type="text" />
             <button onClick={() => setShow(false)}>Submit</button>
           </form>

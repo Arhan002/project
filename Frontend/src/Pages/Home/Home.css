@@ -25,3 +25,27 @@
 .reg:hover {
   cursor: pointer;
 }
+
+#AddForm {
+  flex: auto;
+  flex-direction: column;
+  display: flex;
+  padding: 2px;
+  gap: 10px;
+  width: 100%;
+}
+
+#AddForm input {
+  width: 20rem;
+  padding: 6px;
+}
+
+.x_button {
+  background: transparent;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-weight: bolder;
+  cursor: pointer;
+}

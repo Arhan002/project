@@ -4,16 +4,25 @@ import "../Store/Store.css";
 
 export const showContext = createContext<boolean | any>(false);
 
-const url = "http://127.0.0.1:5000/get_data";
+type store_data = {
+  contact_number: string;
+  location: string;
+  manager_id: number;
+  store_id: number;
+  store_name: string;
+};
+
+const url = "http://127.0.0.1:5000/get_store";
 
 const Store = () => {
   const [show, setShow] = useState(false);
+  const [store_data, setStoreData] = useState([]);
 
   const getAllStores = async () => {
     try {
       const resp = await axios.get(url);
       const data = resp.data;
-
+      setStoreData(data);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -51,7 +60,7 @@ const Store = () => {
                     <th>Contact Number</th>
                     <th>Actions</th>
                   </tr>
-                  <tr className="table-row">
+                  {/* <tr className="table-row">
                     <td>Store ID</td>
                     <td>Store Name</td>
                     <td>Store Location</td>
@@ -60,7 +69,23 @@ const Store = () => {
                     <td>
                       <button>View</button>
                     </td>
-                  </tr>
+                  </tr> */}
+                  {store_data &&
+                    store_data.map((data: store_data) => {
+                      return (
+                        <tr className="table-row">
+                          <td>{data.store_id}</td>
+                          <td>{data.store_name}</td>
+                          <td>{data.location}</td>
+                          <td>{data.manager_id}</td>
+                          <td>{data.contact_number}</td>
+                          <td>
+                            <button>View</button>
+                            <button>delete</button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </table>
               </div>
             </div>
@@ -80,9 +105,13 @@ const AddStore = () => {
     <div className="add-main-container">
       <div className="add-sub-container">
         <div className="mini-container">
-          <p>ADD new Store</p>
-          <form>
-            <input type="text" />
+          <p style={{ fontWeight: "bold" }}>ADD new Store</p>
+          <button className="x_button" onClick={() => setShow(false)}>
+            X
+          </button>
+
+          <form id="AddForm">
+            <input type="text" placeholder="" />
             <input type="text" />
             <button onClick={() => setShow(false)}>Submit</button>
           </form>

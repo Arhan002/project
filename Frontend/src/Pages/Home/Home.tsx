@@ -50,9 +50,10 @@ const Home = () => {
           />
           <div className="btn-container">
             <Button type="submit">Submit</Button>
-            <a className="reg">
+            <a className="reg" href="/register">
               <u>Register Now</u>
             </a>
+            z``
           </div>
         </form>
       </div>

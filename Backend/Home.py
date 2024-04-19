@@ -21,10 +21,25 @@ current_Time = 0
 
 
 
-@app.route("/get_data" , methods = ["GET"])
-def home_page():
+@app.route("/get_store" , methods = ["GET"])
+def getStores():
     if request.method == "GET":
         return obj.getAllStores()
+      
+@app.route("/get_customer" , methods = ["GET"])
+def getCustomers():
+    if request.method == "GET":
+        return obj.getAllCustomers()
+      
+@app.route("/get_payments" , methods = ["GET"])
+def getPayments():
+    if request.method == "GET":
+        return obj.getAllPayments()
+      
+@app.route("/get_products" , methods = ["GET"])
+def getProducts():
+    if request.method == "GET":
+        return obj.getAllProducts()
     
 if __name__ == "__main__":
   # app.run(host="0.0.0.0", port=5000, debug=True)

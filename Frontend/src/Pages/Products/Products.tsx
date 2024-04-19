@@ -1,56 +1,54 @@
-import { createContext, useContext, useState } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import "../Products/Products.css";
 
-type samp = {
-  id: Number;
-  name: String;
-  location: String;
-  type: String;
-  number: Number;
-  amount: number;
+type products_data = {
+  product_id: number;
+  product_name: string;
+  category: string;
+  price: number;
+  quantity_available: number;
 };
+
+const url = "http://127.0.0.1:5000/get_products";
 
 const showContext = createContext<boolean | any>(false);
 
 const Products = () => {
   const [show, setShow] = useState(false);
-  const sampData: samp[] = [
-    {
-      id: 1,
-      name: "Soap",
-      location: "HYD",
-      type: "HouseHold",
-      number: 6304260972,
-      amount: 200,
-    },
-    {
-      id: 2,
-      name: "Soap",
-      location: "HYD",
-      type: "HouseHold",
-      number: 6304260972,
-      amount: 200,
-    },
-    {
-      id: 3,
-      name: "Soap",
-      location: "HYD",
-      type: "HouseHold",
-      number: 6304260972,
-      amount: 200,
-    },
-  ];
+  const [products_data, setProductsData] = useState([]);
 
-  let sum: number = Number.MIN_VALUE;
+  const getAllStores = async () => {
+    try {
+      const resp = await axios.get(url);
+      const data = resp.data;
+      setProductsData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const calcSum = (sampData: samp[]) => {
+  useEffect(() => {
+    getAllStores();
+  }, []);
+
+  let sum: number = 0;
+
+  const calcSum = (sampData: products_data[]) => {
     sampData.map((data) => {
-      sum = sum + data.amount;
+      if (data.quantity_available > 1) {
+        sum = sum + Number(data.price) * Number(data.quantity_available);
+      } else {
+        sum = sum + Number(data.price);
+      }
     });
     return sum;
   };
 
-  calcSum(sampData);
+  {
+    products_data && calcSum(products_data);
+  }
 
   return (
     <>
@@ -73,19 +71,35 @@ const Products = () => {
                   <tr>
                     <th>Product ID</th>
                     <th>Product Name</th>
-                    <th>Product Location</th>
+                    <th>Quantity</th>
                     <th>Product Type</th>
                     <th>Contact Number</th>
                     <th>Amount</th>
                   </tr>
-                  <tr className="table-row">
+                  {/* <tr className="table-row">
                     <td>Product ID</td>
                     <td>Product Name</td>
                     <td>Product Location</td>
                     <td>Product Type</td>
                     <td>Contact Number</td>
                     <td>100</td>
-                  </tr>
+                  </tr> */}
+                  {products_data &&
+                    products_data.map((data: products_data) => {
+                      return (
+                        <tr className="table-row">
+                          <td>{data.product_id}</td>
+                          <td>{data.product_name}</td>
+                          <td>{data.quantity_available}</td>
+                          <td>{data.category}</td>
+                          <td>{data.price}</td>
+                          <td>
+                            <button>View</button>
+                            <button>delete</button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </table>
                 <div className="summation-container">
                   Total Payable Sum Amount : {sum}
@@ -105,9 +119,13 @@ const AddStore = () => {
     <div className="add-main-container">
       <div className="add-sub-container">
         <div className="mini-container">
-          <p>ADD new Store</p>
-          <form>
-            <input type="text" />
+          <p style={{ fontWeight: "bold" }}>ADD new Store</p>
+          <button className="x_button" onClick={() => setShow(false)}>
+            X
+          </button>
+
+          <form id="AddForm">
+            <input type="text" placeholder="" />
             <input type="text" />
             <button onClick={() => setShow(false)}>Submit</button>
           </form>
