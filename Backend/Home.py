@@ -19,6 +19,7 @@ today = 0
 a = 0
 current_Time = 0
 
+# USER
 
 @app.route("/user/add", methods = ["POST"])
 def createUser():
@@ -33,33 +34,61 @@ def getUsers():
         return obj.getUser(data)
 
 
+#STORE
+
 @app.route("/get_store" , methods = ["POST"])
 def getStores():
     if request.method == "POST":
         data = request.json
         return obj.getAllStores(data)
-      
+    
+@app.route("/add_store", methods =["POST"])
+def addStore():
+    if request.method == "POST":
+        data = request.json
+        return obj.addStore(data)
+
+
+
+#CUSTOMER
+
 @app.route("/get_customer" , methods = ["POST"])
 def getCustomers():
     if request.method == "POST":
         data = request.json
         return obj.getAllCustomers(data)
+    
+@app.route("/add_store")
+
+
+#PAYMENTS
       
 @app.route("/get_payments" , methods = ["POST"])
 def getPayments():
     if request.method == "POST":
         data = request.json
         return obj.getAllPayments(data)
-    
 
-      
+@app.route("/add_store")
+
+
+
+#Products
+
 @app.route("/get_products" , methods = ["POST"])
 def getProducts():
     if request.method == "POST":
         data = request.json
         return obj.getAllProducts(data)
     
-    
+@app.route("/add_store")
+
+
+
+
+#DELETE
+
+
 @app.route("/get_store/<int:id>",methods = ["POST","DELETE"])
 def deleteStore(id):
     if request.method == "DELETE":

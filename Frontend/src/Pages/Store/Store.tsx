@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MouseEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
 import "../Store/Store.css";
@@ -19,7 +25,6 @@ const Store = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [store_data, setStoreData] = useState<store_data[]>([]);
-
   const [user, setUser] = useContext(usercontext);
   console.log(user);
   const getAllStores = async () => {
@@ -33,7 +38,8 @@ const Store = () => {
     }
   };
 
-  const goToStore = (id: number) => {
+  const goToStore = (id: number, e: any) => {
+    e.preventDefault();
     try {
       setUser({ ...user, store: id });
       if (user.store != 0 && user.store != undefined) {
@@ -55,7 +61,7 @@ const Store = () => {
 
   useEffect(() => {
     getAllStores();
-  }, []);
+  }, [show]);
 
   return (
     <>
@@ -105,7 +111,9 @@ const Store = () => {
 
                           <td>{data.contact_number}</td>
                           <td>
-                            <button onClick={() => goToStore(data.store_id)}>
+                            <button
+                              onClick={(e) => goToStore(data.store_id, e)}
+                            >
                               View
                             </button>
                             <button onClick={() => deleteStore(data.store_id)}>
@@ -130,6 +138,32 @@ const Store = () => {
 
 const AddStore = () => {
   const [show, setShow] = useContext(showContext);
+  const [store, setStore] = useState({
+    store_name: "",
+    location: "",
+    contact: "",
+  });
+  const addUrl = "http://127.0.0.1:5000/add_store";
+  const [user, setUser] = useContext(usercontext);
+  const addStore = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (user.user != 0 && user.user != undefined) {
+      try {
+        const resp = await axios.post(addUrl, {
+          user_id: user.user,
+          store_name: store.store_name,
+          location: store.location,
+          contact: store.contact,
+        });
+        console.log(resp.data);
+        setShow(false);
+      } catch (error) {
+        console.log("F Err");
+      }
+    }
+  };
   return (
     <div className="add-main-container">
       <div className="add-sub-container">
@@ -140,9 +174,27 @@ const AddStore = () => {
           </button>
 
           <form id="AddForm">
-            <input type="text" placeholder="" />
-            <input type="text" />
-            <button onClick={() => setShow(false)}>Submit</button>
+            <input
+              type="text"
+              placeholder="Store Name"
+              value={store.store_name}
+              onChange={(e) =>
+                setStore({ ...store, store_name: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Store Location"
+              value={store.location}
+              onChange={(e) => setStore({ ...store, location: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Contact"
+              value={store.contact}
+              onChange={(e) => setStore({ ...store, contact: e.target.value })}
+            />
+            <button onClick={(e) => addStore(e)}>Submit</button>
           </form>
         </div>
       </div>
