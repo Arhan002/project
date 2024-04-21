@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
 import "../Store/Store.css";
 
@@ -8,7 +9,6 @@ export const showContext = createContext<boolean | any>(false);
 type store_data = {
   contact_number: string;
   location: string;
-  manager_id: number;
   store_id: number;
   store_name: string;
 };
@@ -16,17 +16,29 @@ type store_data = {
 const url = "http://127.0.0.1:5000/get_store";
 
 const Store = () => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [store_data, setStoreData] = useState([]);
+  const [store_data, setStoreData] = useState<store_data[]>([]);
 
   const [user, setUser] = useContext(usercontext);
   console.log(user);
   const getAllStores = async () => {
     try {
-      const resp = await axios.get(url);
+      const resp = await axios.post(url, { user_id: user.user });
       const data = resp.data;
       setStoreData(data);
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const goToStore = (id: number) => {
+    try {
+      setUser({ ...user, store: id });
+      if (user.store != 0 && user.store != undefined) {
+        navigate("/store/Customers");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +80,7 @@ const Store = () => {
                     <th>Store ID</th>
                     <th>Store Name</th>
                     <th>Store Location</th>
-                    <th>Store Type</th>
+
                     <th>Contact Number</th>
                     <th>Actions</th>
                   </tr>
@@ -83,16 +95,19 @@ const Store = () => {
                     </td>
                   </tr> */}
                   {store_data &&
+                    Array.isArray(store_data) &&
                     store_data.map((data: store_data) => {
                       return (
                         <tr className="table-row">
                           <td>{data.store_id}</td>
                           <td>{data.store_name}</td>
                           <td>{data.location}</td>
-                          <td>{data.manager_id}</td>
+
                           <td>{data.contact_number}</td>
                           <td>
-                            <button>View</button>
+                            <button onClick={() => goToStore(data.store_id)}>
+                              View
+                            </button>
                             <button onClick={() => deleteStore(data.store_id)}>
                               delete
                             </button>

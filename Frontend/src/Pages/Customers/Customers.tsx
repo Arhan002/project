@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usercontext } from "../../Context/User Details/User_details";
 import "../Customers/Customers.css";
 
 const showContext = createContext<boolean | any>(false);
@@ -15,15 +17,29 @@ type customer_data = {
 };
 
 const Customers = () => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [customer_data, setCustomerData] = useState([]);
+  const [customer_data, setCustomerData] = useState<customer_data[]>([]);
+  const [user, setUser] = useContext(usercontext);
 
   const getAllCustomers = async () => {
     try {
-      const resp = await axios.get(url);
+      const resp = await axios.post(url, { store_id: user.store });
       const data = resp.data;
       setCustomerData(data);
       console.log(data);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const goToCustomer = (id: number) => {
+    try {
+      setUser({ ...user, customer: id });
+      if (user.customer != 0 && user.customer != undefined) {
+        navigate("/store/Customers/Payments");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +52,7 @@ const Customers = () => {
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
-        {show ? <AddStore /> : <>{console.log("error")}</>}
+        {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
@@ -70,6 +86,7 @@ const Customers = () => {
                     </td>
                   </tr> */}
                   {customer_data &&
+                    Array.isArray(customer_data) &&
                     customer_data.map((data: customer_data) => {
                       return (
                         <tr className="table-row">
@@ -79,7 +96,11 @@ const Customers = () => {
                           <td>{data.email}</td>
                           <td>{data.phone_number}</td>
                           <td>
-                            <button>View</button>
+                            <button
+                              onClick={() => goToCustomer(data.customer_id)}
+                            >
+                              View
+                            </button>
                             <button>delete</button>
                           </td>
                         </tr>

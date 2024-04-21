@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usercontext } from "../../Context/User Details/User_details";
 import "../Payments/Payments.css";
 
 export const showContext = createContext<boolean | any>(false);
@@ -17,13 +19,27 @@ type payments_data = {
 const Payments = () => {
   const [payments_data, setPaymentsData] = useState([]);
   const [show, setShow] = useState(false);
+  const [user, setUser] = useContext(usercontext);
+  const navigate = useNavigate();
 
   const getAllStores = async () => {
     try {
-      const resp = await axios.get(url);
+      const resp = await axios.post(url, { customer_id: user.customer });
       const data = resp.data;
       setPaymentsData(data);
       console.log(data);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const goToPayment = (id: number) => {
+    try {
+      setUser({ ...user, payment: id });
+      if (user.payment != 0 && user.payment != undefined) {
+        navigate("/store/Customers/Payments/Products");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +84,9 @@ const Payments = () => {
                       <button>View</button>
                     </td>
                   </tr> */}
+
                   {payments_data &&
+                    Array.isArray(payments_data) &&
                     payments_data.map((data: payments_data) => {
                       return (
                         <tr className="table-row">
@@ -78,7 +96,11 @@ const Payments = () => {
                           <td>{data.amount}</td>
                           <td>{data.payment_date}</td>
                           <td>
-                            <button>View</button>
+                            <button
+                              onClick={() => goToPayment(data.payment_id)}
+                            >
+                              View
+                            </button>
                             <button>delete</button>
                           </td>
                         </tr>

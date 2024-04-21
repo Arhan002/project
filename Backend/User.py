@@ -26,26 +26,43 @@ class user():
         except:
             return "ERROR"
 
-    def getAllStores(self):
-        self.cur.execute("SELECT * FROM store")
-        result = self.cur.fetchall()
-        return result
+    def getAllStores(self,data):
+        try:
+            self.cur.execute(f"SELECT * FROM store where user_id = {data['user_id']}")
+            result = self.cur.fetchall()
+            return result
+        except:
+            return "ERROR"
+        
     
     def deleteStore(self,id):
         self.cur.execute(f"DELETE from store where store_id={id}")
         return "User Deleted Successfully"
     
-    def getAllCustomers(self):
-        self.cur.execute("SELECT * FROM customer")
-        result = self.cur.fetchall()
-        return result
+    def getAllCustomers(self,data):
+        try:
+            self.cur.execute(f"SELECT * FROM customer where store_id = {data['store_id']}")
+            result = self.cur.fetchall()
+            return result
+        except:
+            return "ERROR"
+        
+    def deleteCustomer(self,id):
+        self.cur.execute(f"DELETE from customer where customer_id={id}")
+        return "User Deleted Successfully"
     
-    def getAllPayments(self):
-        self.cur.execute("SELECT * FROM payment")
-        result = self.cur.fetchall()
-        return result
+    def getAllPayments(self,data):
+        try:
+            self.cur.execute(f"SELECT * FROM payment where customer_id = {data['customer_id']}")    
+            result = self.cur.fetchall()
+            return result
+        except:
+            return "ERROR"
     
-    def getAllProducts(self):
-        self.cur.execute("SELECT * FROM products")
-        result = self.cur.fetchall()
-        return result
+    def getAllProducts(self,data):
+        try:
+            self.cur.execute(f"SELECT * FROM products where payment_id = {data['payment_id']}")
+            result = self.cur.fetchall()
+            return result
+        except:
+            return "ERROR"

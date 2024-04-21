@@ -33,30 +33,34 @@ def getUsers():
         return obj.getUser(data)
 
 
-@app.route("/get_store" , methods = ["GET"])
+@app.route("/get_store" , methods = ["POST"])
 def getStores():
-    if request.method == "GET":
-        return obj.getAllStores()
+    if request.method == "POST":
+        data = request.json
+        return obj.getAllStores(data)
       
-@app.route("/get_customer" , methods = ["GET"])
+@app.route("/get_customer" , methods = ["POST"])
 def getCustomers():
-    if request.method == "GET":
-        return obj.getAllCustomers()
+    if request.method == "POST":
+        data = request.json
+        return obj.getAllCustomers(data)
       
-@app.route("/get_payments" , methods = ["GET"])
+@app.route("/get_payments" , methods = ["POST"])
 def getPayments():
-    if request.method == "GET":
-        return obj.getAllPayments()
+    if request.method == "POST":
+        data = request.json
+        return obj.getAllPayments(data)
     
 
       
-@app.route("/get_products" , methods = ["GET"])
+@app.route("/get_products" , methods = ["POST"])
 def getProducts():
-    if request.method == "GET":
-        return obj.getAllProducts()
+    if request.method == "POST":
+        data = request.json
+        return obj.getAllProducts(data)
     
     
-@app.route("/get_store/<int:id>",methods = ["GET","DELETE"])
+@app.route("/get_store/<int:id>",methods = ["POST","DELETE"])
 def deleteStore(id):
     if request.method == "DELETE":
         return obj.deleteStore(id)

@@ -24,7 +24,11 @@ const url = "http://127.0.0.1:5000/user/get";
 const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useContext(usercontext);
-  const [login, setLogin] = useState<userObj>();
+  const [login, setLogin] = useState<userObj>({
+    user_id: 0,
+    user_name: "",
+    password: "",
+  });
 
   const { control, handleSubmit } = useForm<formObj>({
     defaultValues: {
@@ -33,27 +37,17 @@ const Home = () => {
     },
   });
 
-  const setPromise = (data: any) =>
-    new Promise((resolve) => {
-      setLogin(data[0]);
-      if (login?.user_id != 0) {
-        resolve("success");
-      }
-    });
-
   const onSubmit: SubmitHandler<formObj> = async (data) => {
     try {
       const resp = await axios.post(url, {
         username: data.Username,
         password: data.password,
       });
-      await new Promise((resolve) => {
-        if (resp.data) resolve("success");
-      });
       const data1 = resp.data;
-      await setPromise(data1);
-      setUser({ ...user, user: login?.user_id });
-
+      setLogin(data1[0]);
+      setUser({ ...user, user: login.user_id });
+      console.log(user);
+      console.log(data);
       {
         if (user.user != undefined && user.user != 0) {
           navigate("/store");

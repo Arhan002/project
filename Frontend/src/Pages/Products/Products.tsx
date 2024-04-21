@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { usercontext } from "../../Context/User Details/User_details";
 import "../Products/Products.css";
 
 type products_data = {
@@ -16,14 +17,16 @@ const showContext = createContext<boolean | any>(false);
 
 const Products = () => {
   const [show, setShow] = useState(false);
-  const [products_data, setProductsData] = useState([]);
+  const [products_data, setProductsData] = useState<products_data[]>([]);
+  const [user, setUser] = useContext(usercontext);
 
   const getAllStores = async () => {
     try {
-      const resp = await axios.get(url);
+      const resp = await axios.post(url, { payment_id: user.payment });
       const data = resp.data;
       setProductsData(data);
       console.log(data);
+      console.log(user);
     } catch (error) {
       console.log(error);
     }
@@ -85,6 +88,7 @@ const Products = () => {
                     <td>100</td>
                   </tr> */}
                   {products_data &&
+                    Array.isArray(products_data) &&
                     products_data.map((data: products_data) => {
                       return (
                         <tr className="table-row">
