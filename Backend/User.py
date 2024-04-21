@@ -31,7 +31,7 @@ class user():
     def createUser(self,data):
         try:
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"INSERT into user_account(user_name,password) values('{data['username']}','{data['password']}')")
             return "OK"
         except:
@@ -54,14 +54,14 @@ class user():
     
     def deleteStore(self,id):
         self.cur.close()
-        self.cur = self.con.cursor(dictionary=True)
+        self.cur = self.con.cursor(dictionary=True,buffered=True)
         self.cur.execute(f"DELETE from store where store_id={id}")
         return "User Deleted Successfully"
     
     def addStore(self,data):
         try:
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"INSERT into store(user_id,store_name,location,contact_number) values({data['user_id']},'{data['store_name']}','{data['location']}','{data['contact']}') ")
             return "OK"
         except:
@@ -83,14 +83,14 @@ class user():
         
     def deleteCustomer(self,id):
         self.cur.close()
-        self.cur = self.con.cursor(dictionary=True)
+        self.cur = self.con.cursor(dictionary=True,buffered=True)
         self.cur.execute(f"DELETE from customer where customer_id={id}")
         return "User Deleted Successfully"
     
     def addCustomer(self,data):
         try:
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"INSERT into customer(store_id,customer_name,email,phone_number,address) values({data['store_id']},'{data['customer_name']}','{data['email']}','{data['contact']}','{data['address']}')")
             return "OK"
         except:
@@ -114,7 +114,7 @@ class user():
     def addPayment(self,data):
         try:
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"insert into payment(customer_id,payment_date,payment_method,amount) values({data['customer_id']},'{today}','{data['payment_method']}',0)")
             return "OK"
         except:
@@ -122,7 +122,7 @@ class user():
         
     def deletePayment(self,id):
         self.cur.close()
-        self.cur = self.con.cursor(dictionary=True)
+        self.cur = self.con.cursor(dictionary=True,buffered=True)
         self.cur.execute(f"DELETE from payment where payment_id={id}")
         return "User Deleted Successfully"
     
@@ -131,7 +131,7 @@ class user():
     def getAllProducts(self,data):
         try:
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"SELECT * FROM products where payment_id = {data['payment_id']}")
             result = self.cur.fetchall()
             return result
@@ -140,13 +140,13 @@ class user():
         
     def deleteProduct(self,id):
         self.cur.close()
-        self.cur = self.con.cursor(dictionary=True)
+        self.cur = self.con.cursor(dictionary=True,buffered=True)
         self.cur.execute(f"DELETE from products where product_id={id}")
         return "User Deleted Successfully"
         
     def addProduct(self,data):
             self.cur.close()
-            self.cur = self.con.cursor(dictionary=True)
+            self.cur = self.con.cursor(dictionary=True,buffered=True)
             self.cur.execute(f"insert into products(product_name,category,price,quantity_available,payment_id) values('{data['product_name']}','{data['category']}',{data['price']},{data['quantity']},{data['payment_id']}) ")
             return "OK"
         
