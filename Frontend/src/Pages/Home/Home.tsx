@@ -46,6 +46,7 @@ const Home = () => {
       const data1 = resp.data;
       setLogin(data1[0]);
       setUser({ ...user, user: login.user_id });
+      console.log(data1);
       console.log(user);
       console.log(data);
       {

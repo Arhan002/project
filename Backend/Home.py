@@ -10,7 +10,7 @@ from User import user
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app,origins=['http://localhost:3000'])
 
 
 obj = user()
@@ -58,7 +58,11 @@ def getCustomers():
         data = request.json
         return obj.getAllCustomers(data)
     
-@app.route("/add_store")
+@app.route("/add_customer",methods =["POST"])
+def addCustomer():
+    if request.method == "POST":
+        data = request.json
+        return obj.addCustomer(data)
 
 
 #PAYMENTS
@@ -69,9 +73,11 @@ def getPayments():
         data = request.json
         return obj.getAllPayments(data)
 
-@app.route("/add_store")
-
-
+@app.route("/add_payment", methods = ["POST"])
+def createPayment():
+    if request.method == "POST":
+        data = request.json
+        return obj.addPayment(data)
 
 #Products
 
@@ -81,7 +87,11 @@ def getProducts():
         data = request.json
         return obj.getAllProducts(data)
     
-@app.route("/add_store")
+@app.route("/add_product", methods = ["POST"])
+def addProduct():
+    if request.method == "POST":
+        data = request.json
+        return obj.addProduct(data)
 
 
 
@@ -94,6 +104,20 @@ def deleteStore(id):
     if request.method == "DELETE":
         return obj.deleteStore(id)
 
+@app.route("/get_customer/<int:id>",methods = ["POST","DELETE"])
+def deleteCustomer(id):
+    if request.method == "DELETE":
+        return obj.deleteCustomer(id)
+
+@app.route("/get_payments/<int:id>",methods = ["POST","DELETE"])
+def deletePayment(id):
+    if request.method == "DELETE":
+        return obj.deletePayment(id)
+
+@app.route("/get_products/<int:id>",methods = ["POST","DELETE"])
+def deleteProducts(id):
+    if request.method == "DELETE":
+        return obj.deleteProduct(id)
     
 
 if __name__ == "__main__":

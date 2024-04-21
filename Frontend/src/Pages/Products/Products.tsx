@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MouseEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { usercontext } from "../../Context/User Details/User_details";
 import "../Products/Products.css";
 
@@ -34,29 +40,39 @@ const Products = () => {
 
   useEffect(() => {
     getAllStores();
-  }, []);
+  }, [show]);
 
   let sum: number = 0;
 
   const calcSum = (sampData: products_data[]) => {
-    sampData.map((data) => {
-      if (data.quantity_available > 1) {
-        sum = sum + Number(data.price) * Number(data.quantity_available);
-      } else {
-        sum = sum + Number(data.price);
-      }
-    });
+    sampData &&
+      Array.isArray(sampData) &&
+      sampData.map((data) => {
+        if (data.quantity_available > 1) {
+          sum = sum + Number(data.price) * Number(data.quantity_available);
+        } else {
+          sum = sum + Number(data.price);
+        }
+      });
     return sum;
   };
 
   {
     products_data && calcSum(products_data);
   }
+  const deleteStore = async (id: number) => {
+    try {
+      const resp = await axios.delete(url + "/" + id);
+      console.log("Delete");
+    } catch (error) {
+      console.log("error");
+    }
+  };
 
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
-        {show ? <AddStore /> : <>{console.log("error")}</>}
+        {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
@@ -99,7 +115,11 @@ const Products = () => {
                           <td>{data.price}</td>
                           <td>
                             <button>View</button>
-                            <button>delete</button>
+                            <button
+                              onClick={() => deleteStore(data.product_id)}
+                            >
+                              delete
+                            </button>
                           </td>
                         </tr>
                       );
@@ -119,6 +139,35 @@ const Products = () => {
 
 const AddStore = () => {
   const [show, setShow] = useContext(showContext);
+  const [store, setStore] = useState({
+    product_name: "",
+    category: "",
+    price: 0,
+    quantity: 0,
+  });
+  const addUrl = "http://127.0.0.1:5000/add_product";
+  const [user, setUser] = useContext(usercontext);
+  const addStore = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    console.log(user);
+    if (user.customer != 0 && user.customer != 0) {
+      try {
+        const resp = await axios.post(addUrl, {
+          payment_id: user.payment,
+          product_name: store.product_name,
+          category: store.category,
+          price: store.price,
+          quantity: store.quantity,
+        });
+        console.log(resp.data);
+        setShow(false);
+      } catch (error) {
+        console.log("F Err");
+      }
+    }
+  };
   return (
     <div className="add-main-container">
       <div className="add-sub-container">
@@ -129,9 +178,38 @@ const AddStore = () => {
           </button>
 
           <form id="AddForm">
-            <input type="text" placeholder="" />
-            <input type="text" />
-            <button onClick={() => setShow(false)}>Submit</button>
+            <input
+              type="text"
+              placeholder="Product"
+              value={store.product_name}
+              onChange={(e) =>
+                setStore({ ...store, product_name: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Category"
+              value={store.category}
+              onChange={(e) => setStore({ ...store, category: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Price"
+              value={store.price > 0 ? store.price : undefined}
+              onChange={(e) =>
+                setStore({ ...store, price: Number(e.target.value) })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Quantity"
+              value={store.quantity > 0 ? store.quantity : undefined}
+              onChange={(e) =>
+                setStore({ ...store, quantity: Number(e.target.value) })
+              }
+            />
+
+            <button onClick={(e) => addStore(e)}>Submit</button>
           </form>
         </div>
       </div>

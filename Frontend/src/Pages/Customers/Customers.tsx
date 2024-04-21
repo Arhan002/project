@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MouseEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
 import "../Customers/Customers.css";
@@ -45,9 +51,18 @@ const Customers = () => {
     }
   };
 
+  const deleteStore = async (id: number) => {
+    try {
+      const resp = await axios.delete(url + "/" + id);
+      console.log("Delete");
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
   useEffect(() => {
     getAllCustomers();
-  }, []);
+  }, [show]);
 
   return (
     <>
@@ -101,7 +116,11 @@ const Customers = () => {
                             >
                               View
                             </button>
-                            <button>delete</button>
+                            <button
+                              onClick={() => deleteStore(data.customer_id)}
+                            >
+                              delete
+                            </button>
                           </td>
                         </tr>
                       );
@@ -118,6 +137,34 @@ const Customers = () => {
 
 const AddStore = () => {
   const [show, setShow] = useContext(showContext);
+  const [store, setStore] = useState({
+    customer_name: "",
+    email: "",
+    contact: "",
+    address: "",
+  });
+  const addUrl = "http://127.0.0.1:5000/add_customer";
+  const [user, setUser] = useContext(usercontext);
+  const addStore = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (user.store != 0 && user.store != undefined) {
+      try {
+        const resp = await axios.post(addUrl, {
+          store_id: user.store,
+          customer_name: store.customer_name,
+          email: store.email,
+          contact: store.contact,
+          address: store.address,
+        });
+        console.log(resp.data);
+        setShow(false);
+      } catch (error) {
+        console.log("F Err");
+      }
+    }
+  };
   return (
     <div className="add-main-container">
       <div className="add-sub-container">
@@ -128,9 +175,33 @@ const AddStore = () => {
           </button>
 
           <form id="AddForm">
-            <input type="text" placeholder="" />
-            <input type="text" />
-            <button onClick={() => setShow(false)}>Submit</button>
+            <input
+              type="text"
+              placeholder="Customer Name"
+              value={store.customer_name}
+              onChange={(e) =>
+                setStore({ ...store, customer_name: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              value={store.email}
+              onChange={(e) => setStore({ ...store, email: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Phone Number"
+              value={store.contact}
+              onChange={(e) => setStore({ ...store, contact: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Address"
+              value={store.address}
+              onChange={(e) => setStore({ ...store, address: e.target.value })}
+            />
+            <button onClick={(e) => addStore(e)}>Submit</button>
           </form>
         </div>
       </div>

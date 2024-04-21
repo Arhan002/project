@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MouseEvent,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
 import "../Payments/Payments.css";
@@ -45,13 +51,22 @@ const Payments = () => {
     }
   };
 
+  const deleteStore = async (id: number) => {
+    try {
+      const resp = await axios.delete(url + "/" + id);
+      console.log("Delete");
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
   useEffect(() => {
     getAllStores();
-  }, []);
+  }, [show]);
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
-        {show ? <AddStore /> : <>{console.log("error")}</>}
+        {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
@@ -101,7 +116,11 @@ const Payments = () => {
                             >
                               View
                             </button>
-                            <button>delete</button>
+                            <button
+                              onClick={() => deleteStore(data.payment_id)}
+                            >
+                              delete
+                            </button>
                           </td>
                         </tr>
                       );
@@ -118,6 +137,28 @@ const Payments = () => {
 
 const AddStore = () => {
   const [show, setShow] = useContext(showContext);
+  const [store, setStore] = useState({
+    payment_method: "",
+  });
+  const addUrl = "http://127.0.0.1:5000/add_payment";
+  const [user, setUser] = useContext(usercontext);
+  const addStore = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (user.customer != 0 && user.customer != undefined) {
+      try {
+        const resp = await axios.post(addUrl, {
+          customer_id: user.customer,
+          payment_method: store.payment_method,
+        });
+        console.log(resp.data);
+        setShow(false);
+      } catch (error) {
+        console.log("F Err");
+      }
+    }
+  };
   return (
     <div className="add-main-container">
       <div className="add-sub-container">
@@ -128,9 +169,15 @@ const AddStore = () => {
           </button>
 
           <form id="AddForm">
-            <input type="text" placeholder="" />
-            <input type="text" />
-            <button onClick={() => setShow(false)}>Submit</button>
+            <input
+              type="text"
+              placeholder="Payment Method"
+              value={store.payment_method}
+              onChange={(e) =>
+                setStore({ ...store, payment_method: e.target.value })
+              }
+            />
+            <button onClick={(e) => addStore(e)}>Submit</button>
           </form>
         </div>
       </div>
