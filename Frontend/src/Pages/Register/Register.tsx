@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -8,7 +9,10 @@ import "../Register/Register.css";
 type formObj = {
   Username: string;
   password: string;
+  confirmPass: string;
 };
+
+const url = "http://127.0.0.1:5000/user/add";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,12 +21,26 @@ const Register = () => {
     defaultValues: {
       Username: "",
       password: "",
+      confirmPass: "",
     },
   });
 
-  const onSubmit: SubmitHandler<formObj> = (data) => {
+  const onSubmit: SubmitHandler<formObj> = async (data) => {
     console.log(data);
-    navigate("/store");
+    if (data.password == data.confirmPass) {
+      console.log("OK");
+      try {
+        const response = await axios.post(url, {
+          username: data.Username,
+          password: data.password,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      navigate("/");
+    } else {
+      console.log("Not same password");
+    }
   };
 
   return (
@@ -33,18 +51,10 @@ const Register = () => {
             name="Username"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <InputText onChange={onChange} value={value} />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Password
+              <InputText
                 onChange={onChange}
                 value={value}
-                toggleMask={true}
-                inputStyle={{ width: "100%" }}
+                placeholder="Username"
               />
             )}
           />
@@ -57,10 +67,30 @@ const Register = () => {
                 value={value}
                 toggleMask={true}
                 inputStyle={{ width: "100%" }}
+                placeholder="Password"
               />
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Controller
+            name="confirmPass"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Password
+                onChange={onChange}
+                value={value}
+                toggleMask={true}
+                inputStyle={{ width: "100%" }}
+                placeholder="Confirm Password"
+              />
+            )}
+          />
+
+          <Button
+            type="submit"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            Register
+          </Button>
         </form>
       </div>
     </>

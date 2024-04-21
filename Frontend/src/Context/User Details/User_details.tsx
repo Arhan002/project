@@ -1,24 +1,22 @@
 import { createContext, useState } from "react";
 
 type user = {
-  user: string;
-  password: string;
-  store: string;
-  payment: string;
-  product: string;
-  customer: string;
+  user: number;
+  store: number;
+  payment: number;
+  product: number;
+  customer: number;
 };
 
 export const usercontext = createContext<user | any>(null);
 
 const User_details = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState({
-    user: "",
-    password: "",
-    store: "",
-    payment: "",
-    product: "",
-    customer: "",
+    user: 0,
+    store: 0,
+    payment: 0,
+    product: 0,
+    customer: 0,
   });
   return (
     <usercontext.Provider value={[user, setUser]}>

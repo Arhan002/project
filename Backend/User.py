@@ -10,10 +10,30 @@ class user():
         except:
             print("Some Error")
             
+            
+    def getUser(self,data):
+        try:
+            self.cur.execute(f"SELECT * FROM user_account where user_name='{data['username']}' AND password='{data['password']}'")
+            result = self.cur.fetchall()
+            return result
+        except:
+            return "ERROR"
+    
+    def createUser(self,data):
+        try:
+            self.cur.execute(f"INSERT into user_account(user_name,password) values('{data['username']}','{data['password']}')")
+            return "OK"
+        except:
+            return "ERROR"
+
     def getAllStores(self):
         self.cur.execute("SELECT * FROM store")
         result = self.cur.fetchall()
         return result
+    
+    def deleteStore(self,id):
+        self.cur.execute(f"DELETE from store where store_id={id}")
+        return "User Deleted Successfully"
     
     def getAllCustomers(self):
         self.cur.execute("SELECT * FROM customer")

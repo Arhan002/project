@@ -20,7 +20,7 @@ const Store = () => {
   const [store_data, setStoreData] = useState([]);
 
   const [user, setUser] = useContext(usercontext);
-
+  console.log(user);
   const getAllStores = async () => {
     try {
       const resp = await axios.get(url);
@@ -29,6 +29,15 @@ const Store = () => {
       console.log(data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const deleteStore = async (id: number) => {
+    try {
+      const resp = await axios.delete(url + "/" + id);
+      console.log("Delete");
+    } catch (error) {
+      console.log("error");
     }
   };
 
@@ -84,7 +93,9 @@ const Store = () => {
                           <td>{data.contact_number}</td>
                           <td>
                             <button>View</button>
-                            <button>delete</button>
+                            <button onClick={() => deleteStore(data.store_id)}>
+                              delete
+                            </button>
                           </td>
                         </tr>
                       );

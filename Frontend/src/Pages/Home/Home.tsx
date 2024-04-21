@@ -1,8 +1,11 @@
+import axios from "axios";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
+import { useContext, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { usercontext } from "../../Context/User Details/User_details";
 import "../Home/Home.css";
 
 type formObj = {
@@ -10,8 +13,18 @@ type formObj = {
   password: string;
 };
 
+type userObj = {
+  user_name: string;
+  user_id: number;
+  password: string;
+};
+
+const url = "http://127.0.0.1:5000/user/get";
+
 const Home = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useContext(usercontext);
+  const [login, setLogin] = useState<userObj>();
 
   const { control, handleSubmit } = useForm<formObj>({
     defaultValues: {
@@ -20,9 +33,35 @@ const Home = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<formObj> = (data) => {
-    console.log(data);
-    navigate("/store");
+  const setPromise = (data: any) =>
+    new Promise((resolve) => {
+      setLogin(data[0]);
+      if (login?.user_id != 0) {
+        resolve("success");
+      }
+    });
+
+  const onSubmit: SubmitHandler<formObj> = async (data) => {
+    try {
+      const resp = await axios.post(url, {
+        username: data.Username,
+        password: data.password,
+      });
+      await new Promise((resolve) => {
+        if (resp.data) resolve("success");
+      });
+      const data1 = resp.data;
+      await setPromise(data1);
+      setUser({ ...user, user: login?.user_id });
+
+      {
+        if (user.user != undefined && user.user != 0) {
+          navigate("/store");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -53,7 +92,6 @@ const Home = () => {
             <a className="reg" href="/register">
               <u>Register Now</u>
             </a>
-            z``
           </div>
         </form>
       </div>

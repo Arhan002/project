@@ -20,6 +20,18 @@ a = 0
 current_Time = 0
 
 
+@app.route("/user/add", methods = ["POST"])
+def createUser():
+    if request.method == "POST":
+        data = request.json
+        return obj.createUser(data)
+    
+@app.route("/user/get", methods=["POST"])
+def getUsers():
+    if request.method == "POST":
+        data = request.json
+        return obj.getUser(data)
+
 
 @app.route("/get_store" , methods = ["GET"])
 def getStores():
@@ -35,12 +47,22 @@ def getCustomers():
 def getPayments():
     if request.method == "GET":
         return obj.getAllPayments()
+    
+
       
 @app.route("/get_products" , methods = ["GET"])
 def getProducts():
     if request.method == "GET":
         return obj.getAllProducts()
     
+    
+@app.route("/get_store/<int:id>",methods = ["GET","DELETE"])
+def deleteStore(id):
+    if request.method == "DELETE":
+        return obj.deleteStore(id)
+
+    
+
 if __name__ == "__main__":
   # app.run(host="0.0.0.0", port=5000, debug=True)
    app.run( port=5000, debug=True)
