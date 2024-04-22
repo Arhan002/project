@@ -7,14 +7,13 @@ today = date.today()
 
 class user():
     def __init__(self):
-        try:
+ 
             self.con=mysql.connector.connect(host="localhost",user="root",password="1234",database="grocery")
             self.con.autocommit = True
             self.cur= self.con.cursor(dictionary=True,buffered=True)
             self.cur.allow_multi = True
             print("connection successful")
-        except:
-            print("Some Error")
+       
             
     
     
