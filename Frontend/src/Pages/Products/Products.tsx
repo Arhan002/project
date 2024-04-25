@@ -196,7 +196,7 @@ const AddStore = () => {
     <div className="add-main-container">
       <div className="add-sub-container">
         <div className="mini-container">
-          <p style={{ fontWeight: "bold" }}>ADD new Store</p>
+          <p style={{ fontWeight: "bold" }}>ADD new Product</p>
           <button className="x_button" onClick={() => setShow(false)}>
             X
           </button>
