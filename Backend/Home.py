@@ -7,11 +7,10 @@ from Customer import customer
 from Payment import payment
 from Product import product
 
+
 app = Flask(__name__)
-CORS(app,origins=['http://localhost:3000'])
 
-
-
+CORS(app)
 
 today = 0
 a = 0
@@ -131,11 +130,17 @@ def deleteProducts(id):
         obj = product()
         return obj.deleteProduct(id)
     
+    
+
+
+@app.route("/test", methods=["GET"])
+def Test():
+    if request.method == "GET":
+        return "HELLO"
 
 if __name__ == "__main__":
-  # app.run(host="0.0.0.0", port=5000, debug=True)
-   app.run( port=5000, debug=False)
-
+#   app.run(host="0.0.0.0", port=5050, debug=True)
+   app.run( port=5000, debug=True)
 
 
 

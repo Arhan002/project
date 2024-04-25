@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Button } from "primereact/button";
 import {
   MouseEvent,
   createContext,
@@ -113,11 +114,15 @@ const Payments = () => {
                           <td>
                             <button
                               onClick={() => goToPayment(data.payment_id)}
+                              className="vButton"
+                              style={{ margin: "2px" }}
                             >
                               View
                             </button>
                             <button
                               onClick={() => deleteStore(data.payment_id)}
+                              className="dButton"
+                              style={{ margin: "2px" }}
                             >
                               delete
                             </button>
@@ -177,7 +182,13 @@ const AddStore = () => {
                 setStore({ ...store, payment_method: e.target.value })
               }
             />
-            <button onClick={(e) => addStore(e)}>Submit</button>
+            <Button
+              severity="warning"
+              onClick={(e) => addStore(e)}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              Submit
+            </Button>
           </form>
         </div>
       </div>

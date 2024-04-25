@@ -147,3 +147,55 @@ td {
   font-weight: bolder;
   cursor: pointer;
 }
+
+.vButton {
+  align-self: center;
+  font-size: medium;
+  z-index: 0px;
+  background-color: #009bbd;
+  color: white;
+  transition: all;
+  transition-duration: 200ms;
+  border-radius: 3px;
+  padding-inline: 10px;
+  padding-block: 4px;
+  border: 2px solid #009bbd;
+}
+
+.vButton:hover {
+  background-color: #05bbe3;
+  scale: 1.1;
+  cursor: pointer;
+  transition: all;
+  transition-duration: 200ms;
+}
+
+.vButton:active {
+  scale: 0.75;
+}
+
+.dButton {
+  align-self: center;
+  font-size: medium;
+  z-index: 0px;
+  background-color: #ff1212;
+  color: white;
+  transition: all;
+  transition-duration: 200ms;
+  border-radius: 3px;
+  padding-inline: 10px;
+  padding-block: 4px;
+  border: 2px solid #ff1212;
+}
+
+.dButton:hover {
+  background-color: #fa4646;
+  scale: 1.1;
+  cursor: pointer;
+  transition: all;
+  transition-duration: 200ms;
+}
+
+.dButton:active {
+  scale: 0.75;
+}

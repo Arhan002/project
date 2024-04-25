@@ -2,7 +2,8 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { useContext, useState } from "react";
+import { Toast } from "primereact/toast";
+import { useContext, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
@@ -23,6 +24,7 @@ const url = "http://127.0.0.1:5000/user/get";
 
 const Home = () => {
   const navigate = useNavigate();
+  const toast = useRef<any>(null);
   const [user, setUser] = useContext(usercontext);
   const [login, setLogin] = useState<userObj>({
     user_id: 0,
@@ -52,6 +54,12 @@ const Home = () => {
       {
         if (user.user != undefined && user.user != 0) {
           navigate("/store");
+        } else {
+          toast.current.show({
+            severity: "error",
+            summary: "Try Again",
+            detail: "Check your credentials",
+          });
         }
       }
     } catch (error) {
@@ -62,7 +70,9 @@ const Home = () => {
   return (
     <>
       <div className="form-container">
+        <Toast ref={toast} />
         <form onSubmit={handleSubmit(onSubmit)} id="form">
+          <h1 style={{ display: "flex", justifyContent: "center" }}>Login</h1>
           <Controller
             name="Username"
             control={control}

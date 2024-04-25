@@ -1,9 +1,12 @@
 import axios from "axios";
+import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 import {
   MouseEvent,
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +26,7 @@ const url = "http://127.0.0.1:5000/get_store";
 
 const Store = () => {
   const navigate = useNavigate();
+  const toast = useRef<any>(null);
   const [show, setShow] = useState(false);
   const [store_data, setStoreData] = useState<store_data[]>([]);
   const [user, setUser] = useContext(usercontext);
@@ -53,6 +57,11 @@ const Store = () => {
   const deleteStore = async (id: number) => {
     try {
       const resp = await axios.delete(url + "/" + id);
+      toast.current.show({
+        severity: "warning",
+        summary: "Deleted",
+        detail: "Please refresh",
+      });
       console.log("Delete");
     } catch (error) {
       console.log("error");
@@ -66,6 +75,7 @@ const Store = () => {
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
+        <Toast ref={toast} />
         {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
@@ -112,11 +122,17 @@ const Store = () => {
                           <td>{data.contact_number}</td>
                           <td>
                             <button
+                              className="vButton"
                               onClick={(e) => goToStore(data.store_id, e)}
+                              style={{ margin: "2px" }}
                             >
                               View
                             </button>
-                            <button onClick={() => deleteStore(data.store_id)}>
+                            <button
+                              className="dButton"
+                              onClick={() => deleteStore(data.store_id)}
+                              style={{ margin: "2px" }}
+                            >
                               delete
                             </button>
                           </td>
@@ -143,6 +159,7 @@ const AddStore = () => {
     location: "",
     contact: "",
   });
+  const toast = useRef<any>(null);
   const addUrl = "http://127.0.0.1:5000/add_store";
   const [user, setUser] = useContext(usercontext);
   const addStore = async (
@@ -194,7 +211,13 @@ const AddStore = () => {
               value={store.contact}
               onChange={(e) => setStore({ ...store, contact: e.target.value })}
             />
-            <button onClick={(e) => addStore(e)}>Submit</button>
+            <Button
+              severity="warning"
+              onClick={(e) => addStore(e)}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              Submit
+            </Button>
           </form>
         </div>
       </div>

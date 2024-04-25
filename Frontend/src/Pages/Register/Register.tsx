@@ -2,6 +2,7 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
+import { useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "../Register/Register.css";
@@ -16,6 +17,7 @@ const url = "http://127.0.0.1:5000/user/add";
 
 const Register = () => {
   const navigate = useNavigate();
+  const toast = useRef<any>(null);
 
   const { control, handleSubmit } = useForm<formObj>({
     defaultValues: {
@@ -35,7 +37,11 @@ const Register = () => {
           password: data.password,
         });
       } catch (error) {
-        console.log(error);
+        toast.current.show({
+          severity: "warning",
+          summary: "Same User Might Exist",
+          detail: "Use new credentials",
+        });
       }
       navigate("/");
     } else {
@@ -47,6 +53,9 @@ const Register = () => {
     <>
       <div className="form-container">
         <form onSubmit={handleSubmit(onSubmit)} id="form">
+          <h1 style={{ display: "flex", justifyContent: "center" }}>
+            Register
+          </h1>
           <Controller
             name="Username"
             control={control}
