@@ -109,7 +109,7 @@ const Customers = () => {
                     <th>Customer ID</th>
                     <th>Customer Name</th>
                     <th>Customer Location</th>
-                    <th>Customer Type</th>
+                    <th>Customer Email</th>
                     <th>Contact Number</th>
                     <th>Actions</th>
                   </tr>

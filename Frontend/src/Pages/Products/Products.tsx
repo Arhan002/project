@@ -116,8 +116,8 @@ const Products = () => {
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Product Type</th>
-                    <th>Contact Number</th>
                     <th>Amount</th>
+                    <th>Actions</th>
                   </tr>
                   {/* <tr className="table-row">
                     <td>Product ID</td>

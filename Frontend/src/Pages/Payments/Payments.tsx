@@ -106,10 +106,9 @@ const Payments = () => {
                 <table className="table-main">
                   <tr>
                     <th>Payments ID</th>
-                    <th>Payments Name</th>
-                    <th>Payments Location</th>
-                    <th>Payments Type</th>
-                    <th>Contact Number</th>
+                    <th>Payments Method</th>
+
+                    <th>Date</th>
                     <th>Actions</th>
                   </tr>
                   {/* <tr className="table-row">
@@ -130,8 +129,7 @@ const Payments = () => {
                         <tr className="table-row">
                           <td>{data.payment_id}</td>
                           <td>{data.payment_method}</td>
-                          <td>{data.payment_date}</td>
-                          <td>{data.amount}</td>
+
                           <td>{data.payment_date}</td>
                           <td>
                             <button
