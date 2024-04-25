@@ -1,13 +1,17 @@
 import axios from "axios";
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 import {
   MouseEvent,
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
+import { Link } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
+import back from "../../assets/back.png";
 import "../Products/Products.css";
 
 type products_data = {
@@ -23,6 +27,7 @@ const url = "http://127.0.0.1:5000/get_products";
 const showContext = createContext<boolean | any>(false);
 
 const Products = () => {
+  const toast = useRef<any>(null);
   const [show, setShow] = useState(false);
   const [products_data, setProductsData] = useState<products_data[]>([]);
   const [user, setUser] = useContext(usercontext);
@@ -65,7 +70,17 @@ const Products = () => {
     try {
       const resp = await axios.delete(url + "/" + id);
       console.log("Delete");
+      toast.current.show({
+        severity: "warn",
+        summary: "Deleted",
+        detail: "Please refresh",
+      });
     } catch (error) {
+      toast.current.show({
+        severity: "error",
+        summary: "API error",
+        detail: "Please restart from login",
+      });
       console.log("error");
     }
   };
@@ -73,10 +88,18 @@ const Products = () => {
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
+        <Toast ref={toast}></Toast>
         {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
+              <Link to={"/store/Customers/Payments"}>
+                <img
+                  src={back}
+                  style={{ width: "50px", height: "50px" }}
+                  className="back-button"
+                />
+              </Link>
               <div className="store-heading">
                 <p>Products</p>
                 <button

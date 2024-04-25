@@ -4,7 +4,8 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import back from "../../assets/back.png";
 import "../Register/Register.css";
 
 type formObj = {
@@ -53,6 +54,13 @@ const Register = () => {
     <>
       <div className="form-container">
         <form onSubmit={handleSubmit(onSubmit)} id="form">
+          <Link to={"/"}>
+            <img
+              src={back}
+              style={{ width: "50px", height: "50px" }}
+              className="back-button"
+            />
+          </Link>
           <h1 style={{ display: "flex", justifyContent: "center" }}>
             Register
           </h1>

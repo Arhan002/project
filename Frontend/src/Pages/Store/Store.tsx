@@ -9,8 +9,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
+import back from "../../assets/back.png";
 import "../Store/Store.css";
 
 export const showContext = createContext<boolean | any>(false);
@@ -58,12 +59,17 @@ const Store = () => {
     try {
       const resp = await axios.delete(url + "/" + id);
       toast.current.show({
-        severity: "warning",
+        severity: "warn",
         summary: "Deleted",
         detail: "Please refresh",
       });
       console.log("Delete");
     } catch (error) {
+      toast.current.show({
+        severity: "error",
+        summary: "Contains Content",
+        detail: "Please remove all the related tables",
+      });
       console.log("error");
     }
   };
@@ -80,6 +86,13 @@ const Store = () => {
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
+              <Link to={"/"}>
+                <img
+                  src={back}
+                  style={{ width: "50px", height: "50px" }}
+                  className="back-button"
+                />
+              </Link>
               <div className="store-heading">
                 <p>Stores</p>
                 <button

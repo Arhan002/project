@@ -1,14 +1,17 @@
 import axios from "axios";
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 import {
   MouseEvent,
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usercontext } from "../../Context/User Details/User_details";
+import back from "../../assets/back.png";
 import "../Payments/Payments.css";
 
 export const showContext = createContext<boolean | any>(false);
@@ -24,6 +27,7 @@ type payments_data = {
   amount: number;
 };
 const Payments = () => {
+  const toast = useRef<any>(null);
   const [payments_data, setPaymentsData] = useState([]);
   const [show, setShow] = useState(false);
   const [user, setUser] = useContext(usercontext);
@@ -55,8 +59,18 @@ const Payments = () => {
   const deleteStore = async (id: number) => {
     try {
       const resp = await axios.delete(url + "/" + id);
+      toast.current.show({
+        severity: "warn",
+        summary: "Deleted",
+        detail: "Please refresh",
+      });
       console.log("Delete");
     } catch (error) {
+      toast.current.show({
+        severity: "error",
+        summary: "Contains Content",
+        detail: "Please remove all the related tables",
+      });
       console.log("error");
     }
   };
@@ -67,10 +81,18 @@ const Payments = () => {
   return (
     <>
       <showContext.Provider value={[show, setShow]}>
+        <Toast ref={toast} />
         {show ? <AddStore /> : <>{}</>}
         <div className="main-container">
           <div className="sub-container">
             <div className="store-container">
+              <Link to={"/store/Customers"}>
+                <img
+                  src={back}
+                  style={{ width: "50px", height: "50px" }}
+                  className="back-button"
+                />
+              </Link>
               <div className="store-heading">
                 <p>Payments</p>
                 <button
